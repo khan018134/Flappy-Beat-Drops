@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090914">
+  <meta name="description" content="Install Flappy Beat Drop on your phone and play offline after the first visit.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./assets/app-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Beat Drop">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Install Flappy Beat Drop</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;min-height:100dvh;padding:24px;display:grid;place-items:center;background:radial-gradient(ellipse at top,#211939,#090914 65%);color:#f7f6ff;font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.card{width:min(100%,440px);padding:30px;border:1px solid #39324f;border-radius:24px;background:#111120eF;box-shadow:0 24px 80px #0008;text-align:center}.icon{width:84px;height:84px;margin:0 auto 18px}.eyebrow{font:11px ui-monospace,monospace;letter-spacing:.18em;color:#39e7f5;text-transform:uppercase}h1{margin:9px 0;font-size:clamp(30px,8vw,42px);line-height:1.04;letter-spacing:-.06em;background:linear-gradient(100deg,#fff,#ff79b8 55%,#39e7f5);color:transparent;background-clip:text}.intro{margin:12px 0 22px;color:#b8b6ca}.button{display:block;width:100%;padding:14px 18px;border:0;border-radius:12px;background:linear-gradient(100deg,#ff3d9a,#9b65ff);color:white;text-decoration:none;font-weight:750;letter-spacing:.06em;cursor:pointer}.button.secondary{margin-top:10px;border:1px solid #38334f;background:#171627;color:#e9e7f5}.steps{margin:22px 0 0;padding:16px 18px;border:1px solid #2d2b40;border-radius:14px;background:#0b0b17;text-align:left;color:#c5c3d4;font-size:14px}.steps strong{color:#fff}.steps p{margin:0 0 9px}.steps p:last-child{margin-bottom:0}.note{min-height:20px;margin-top:12px;color:#39e7f5;font-size:13px}.fine{margin:14px 0 0;color:#87859a;font-size:12px}a{color:#9feef3}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <img class="icon" src="./assets/app-icon.svg" alt="">
+    <div class="eyebrow">A rhythm arcade challenge</div>
+    <h1>Flappy Beat Drop</h1>
+    <p class="intro">Install the game on your home screen. Open it once while online; after its files are cached, the game can launch offline.</p>
+    <button id="install" class="button" type="button" hidden>Install game</button>
+    <a class="button secondary" href="./index.html">Play Flappy Beat Drop</a>
+    <section class="steps" aria-label="Installation instructions">
+      <p><strong>Android:</strong> Open this page in Chrome, tap <strong>Install game</strong> if offered, or use the browser menu → <strong>Install app</strong>.</p>
+      <p><strong>iPhone:</strong> Open this page in Safari, tap <strong>Share</strong> → <strong>Add to Home Screen</strong>.</p>
+      <p><strong>Offline:</strong> Keep this page open until it says “Ready for offline play,” then launch the installed game at least once while online.</p>
+    </section>
+    <p id="status" class="note" role="status" aria-live="polite">Preparing offline files…</p>
+    <p class="fine">Installation requires the published website to be served over HTTPS. Offline availability begins after the first successful online visit.</p>
+  </main>
+<script>
+  let installPrompt;
+  const installButton = document.querySelector('#install');
+  const status = document.querySelector('#status');
+
+  window.addEventListener('beforeinstallprompt', event => {
+    event.preventDefault();
+    installPrompt = event;
+    installButton.hidden = false;
+  });
+
+  installButton.addEventListener('click', async () => {
+    if (!installPrompt) {
+      status.textContent = 'Use your browser menu to install or add this game to your home screen.';
+      return;
+    }
+    installPrompt.prompt();
+    await installPrompt.userChoice;
+    installPrompt = null;
+    installButton.hidden = true;
+  });
+
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => navigator.serviceWorker.ready)
+      .then(() => { status.textContent = 'Ready for offline play after the game is opened once online.'; })
+      .catch(() => { status.textContent = 'Offline setup could not finish. Check your connection and reload this page.'; });
+  } else {
+    status.textContent = 'Open this page from its HTTPS website to enable installation and offline play.';
+  }
+</script>
+</body>
+</html>

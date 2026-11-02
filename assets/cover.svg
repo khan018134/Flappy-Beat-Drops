@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Flappy Beat Drop — Neon Arcade</title>
+  <desc id="desc">A neon arcade scene with a glowing microphone character flying between speaker stacks.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#17142b"/><stop offset="1" stop-color="#080811"/></linearGradient>
+    <linearGradient id="title" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#fff"/><stop offset=".52" stop-color="#ff79b8"/><stop offset="1" stop-color="#39e7f5"/></linearGradient>
+    <linearGradient id="speaker" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#292642"/><stop offset="1" stop-color="#11111f"/></linearGradient>
+    <filter id="pinkGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="9" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="cyanGlow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="7" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M48 0H0V48" fill="none" stroke="#8e83bf" stroke-opacity=".09"/></pattern>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/><rect width="1200" height="630" fill="url(#grid)"/>
+  <circle cx="610" cy="285" r="310" fill="#8b45bc" opacity=".09"/>
+  <g opacity=".55" fill="#a99bd7" font-family="sans-serif"><text x="92" y="151" font-size="38">♫</text><text x="1030" y="177" font-size="32">♪</text><text x="937" y="486" font-size="28">♬</text><text x="282" y="462" font-size="25">♩</text></g>
+  <!-- speaker stacks -->
+  <g filter="url(#cyanGlow)"><rect x="72" y="0" width="170" height="206" rx="18" fill="url(#speaker)" stroke="#39e7f5" stroke-width="3"/><rect x="72" y="424" width="170" height="206" rx="18" fill="url(#speaker)" stroke="#39e7f5" stroke-width="3"/><rect x="957" y="0" width="170" height="170" rx="18" fill="url(#speaker)" stroke="#39e7f5" stroke-width="3"/><rect x="957" y="460" width="170" height="170" rx="18" fill="url(#speaker)" stroke="#39e7f5" stroke-width="3"/></g>
+  <g fill="#0a0a15" stroke="#ff3d9a" stroke-width="4"><circle cx="157" cy="72" r="39"/><circle cx="157" cy="157" r="25"/><circle cx="157" cy="487" r="32"/><circle cx="157" cy="570" r="39"/><circle cx="1042" cy="65" r="31"/><circle cx="1042" cy="125" r="20"/><circle cx="1042" cy="505" r="23"/><circle cx="1042" cy="574" r="35"/></g>
+  <g fill="#ff3d9a" filter="url(#pinkGlow)"><circle cx="157" cy="72" r="12"/><circle cx="157" cy="157" r="8"/><circle cx="157" cy="487" r="10"/><circle cx="157" cy="570" r="12"/><circle cx="1042" cy="65" r="9"/><circle cx="1042" cy="125" r="7"/><circle cx="1042" cy="505" r="7"/><circle cx="1042" cy="574" r="11"/></g>
+  <!-- microphone hero -->
+  <g transform="translate(600 330) rotate(-12)" filter="url(#pinkGlow)"><circle cx="0" cy="0" r="75" fill="#17182a" stroke="#39e7f5" stroke-width="5"/><rect x="-29" y="-65" width="58" height="98" rx="29" fill="#e8f1f5" stroke="#ff3d9a" stroke-width="6"/><path d="M-24-20H24M-24-5H24M-20 10H20" stroke="#4b5267" stroke-width="5" stroke-linecap="round"/><path d="M0 34V54M-25 55H25" stroke="#39e7f5" stroke-width="8" stroke-linecap="round"/><circle cx="-10" cy="-42" r="4" fill="#ff3d9a"/><circle cx="10" cy="-42" r="4" fill="#ff3d9a"/></g>
+  <path d="M300 317h90M810 317h90" stroke="#ffdf65" stroke-opacity=".72" stroke-width="3" stroke-dasharray="7 12"/>
+  <text x="600" y="105" text-anchor="middle" fill="#a9a4ba" font-family="monospace" font-size="16" letter-spacing="7">A RHYTHM ARCADE CHALLENGE</text>
+  <text x="600" y="535" text-anchor="middle" fill="url(#title)" font-family="Arial,sans-serif" font-size="65" font-weight="800" letter-spacing="-2">FLAPPY BEAT DROP</text>
+  <text x="600" y="576" text-anchor="middle" fill="#aaa8bb" font-family="monospace" font-size="15" letter-spacing="4">FLAP • DODGE • DROP THE BEAT</text>
+  <path d="M0 618H1200" stroke="#ff3d9a" stroke-opacity=".65" stroke-width="3" filter="url(#pinkGlow)"/>
+</svg>

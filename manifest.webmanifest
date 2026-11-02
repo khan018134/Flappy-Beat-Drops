@@ -1,0 +1,36 @@
+{
+  "id": "flappy-beat-drop",
+  "name": "Flappy Beat Drop",
+  "short_name": "Beat Drop",
+  "description": "A neon rhythm arcade game. Flap through speaker stacks, collect power-ups, and beat your high score.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#090914",
+  "theme_color": "#090914",
+  "categories": [
+    "games",
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "./assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./assets/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

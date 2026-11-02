@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090914">
+  <meta name="description" content="Flappy Beat Drop is a neon arcade challenge. Flap through speaker stacks, collect power-ups, build combos, and chase your high score.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Flappy Beat Drop — Neon Arcade">
+  <meta property="og:description" content="Drop into a rhythm-inspired arcade challenge. Play free in your browser.">
+  <meta property="og:image" content="https://golden-elf-10a0d8.netlify.app/">
+  <title>Flappy Beat Drop — Neon Arcade</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Beat Drop">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+    :root{color-scheme:dark;--bg:#090914;--panel:#111120;--line:#28283d;--muted:#9898ad;--pink:#ff3d9a;--cyan:#39e7f5;--gold:#ffdf65;--purple:#aa81ff}
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0}body{overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#17132d 0%,var(--bg) 67%);color:#f7f6ff;font-family:'Space Grotesk',system-ui,sans-serif;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+    button{font:inherit;color:inherit}button:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}.app{height:100%;min-height:420px;display:flex;flex-direction:column;align-items:center;padding:clamp(10px,2vh,20px) 14px;gap:12px}.topbar,.bottombar{width:min(100%,520px);display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:10px}.brand-mark{width:38px;height:38px;border:1px solid #45314f;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#29203f,#151524);color:var(--pink);font-size:20px;box-shadow:0 0 24px #ff3d9a20}.brand-title{font-size:15px;line-height:1;font-weight:700;letter-spacing:.13em}.brand-kicker{display:block;color:var(--muted);font:10px 'DM Mono',monospace;letter-spacing:.13em;margin-top:5px}.actions{display:flex;gap:8px}.icon-btn{height:38px;min-width:42px;padding:0 11px;border:1px solid var(--line);border-radius:11px;background:#141422;color:#dddced;cursor:pointer;transition:.18s}.icon-btn:hover{border-color:#5a5371;background:#1a192b}.icon-btn:disabled{opacity:.45;cursor:not-allowed}.stage{position:relative;width:min(100%,520px);flex:1;min-height:0;border:1px solid #302b48;border-radius:22px;overflow:hidden;background:#0b0b19;box-shadow:0 24px 80px #0008,0 0 45px #a855f710}.stage:before{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;box-shadow:inset 0 0 55px #4e38a51a;z-index:1}.game-canvas{display:block;width:100%;height:100%;touch-action:none}.overlay{position:absolute;inset:0;z-index:2;display:grid;place-items:center;padding:20px;background:#090914c9;backdrop-filter:blur(8px);text-align:center}.overlay[hidden]{display:none}.card{width:min(100%,360px);padding:clamp(20px,5vh,34px);border:1px solid #38334f;border-radius:22px;background:linear-gradient(155deg,#171627f5,#10101df5);box-shadow:0 20px 70px #0008}.eyebrow{font:11px 'DM Mono',monospace;letter-spacing:.2em;color:var(--cyan);text-transform:uppercase}.hero-icon{font-size:44px;margin:12px 0 6px;filter:drop-shadow(0 0 15px #ff3d9a80)}h1,h2,p{margin:0}.hero-title{font-size:clamp(30px,8vw,42px);line-height:1.04;font-weight:700;letter-spacing:-.06em;background:linear-gradient(100deg,#fff 15%,#ff7bb9 52%,#59eef3 92%);color:transparent;background-clip:text}.intro{max-width:290px;margin:12px auto 20px;color:#b8b6ca;font-size:14px;line-height:1.55}.section-label{font:10px 'DM Mono',monospace;letter-spacing:.15em;color:#a6a4b9;text-transform:uppercase;margin-bottom:9px}.skins{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:17px}.skin{padding:10px 5px 9px;border:1px solid var(--line);border-radius:12px;background:#0d0d19;color:#c9c7d7;cursor:pointer;transition:.18s}.skin:hover{transform:translateY(-2px);border-color:#55516d}.skin[aria-pressed=true]{border-color:var(--pink);background:#ff3d9a12;box-shadow:0 0 18px #ff3d9a1d;color:white}.skin-icon{display:block;font-size:22px;margin-bottom:5px}.skin-name{font-size:10px;font-weight:700;letter-spacing:.06em}.primary{width:100%;padding:14px 18px;border:0;border-radius:12px;background:linear-gradient(100deg,#ff3d9a,#9b65ff);box-shadow:0 8px 26px #e445a637;color:white;font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;cursor:pointer;transition:transform .16s,filter .16s}.primary:hover{filter:brightness(1.12);transform:translateY(-1px)}.primary:active{transform:translateY(1px)}.hint{margin-top:14px;color:#8f8da3;font:10px 'DM Mono',monospace;letter-spacing:.03em}.result-title{font-size:30px;font-weight:700;letter-spacing:-.04em;color:var(--pink)}.result-copy{margin:6px 0 18px;color:var(--muted);font:11px 'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase}.score-box{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}.score-cell{padding:13px;border:1px solid var(--line);border-radius:12px;background:#0b0b17}.score-caption{display:block;color:var(--muted);font:9px 'DM Mono',monospace;letter-spacing:.13em;text-transform:uppercase}.score-value{display:block;margin-top:7px;color:var(--cyan);font-size:25px;font-weight:700}.score-cell:last-child .score-value{color:var(--gold)}.bottombar{min-height:19px;color:#858398;font:9px 'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase}.status{display:flex;align-items:center;gap:7px}.status-dot{width:6px;height:6px;border-radius:100%;background:#48e5a5;box-shadow:0 0 9px #48e5a5}.credit{opacity:.8}.toast{position:absolute;z-index:3;top:15px;left:50%;transform:translate(-50%,-10px);padding:8px 12px;border:1px solid #ffffff22;border-radius:99px;background:#10101ddb;color:white;font:10px 'DM Mono',monospace;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
+    @media(max-height:620px){.app{gap:7px;padding-top:7px;padding-bottom:7px}.brand-mark{width:32px;height:32px}.topbar{min-height:34px}.card{padding:17px}.hero-icon{font-size:34px;margin:7px 0 3px}.intro{margin:8px auto 12px}.skins{margin-bottom:11px}.primary{padding:11px}.bottombar{font-size:8px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand"><div class="brand-mark" aria-hidden="true">♫</div><div><div class="brand-title">BEAT DROP</div><span class="brand-kicker">NEON ARCADE • 01</span></div></div>
+      <div class="actions">
+        <button id="pause-btn" class="icon-btn" type="button" aria-label="Pause game" title="Pause" disabled>Ⅱ</button>
+        <button id="sound-btn" class="icon-btn" type="button" aria-label="Turn sound off" title="Sound on">♫</button>
+      </div>
+    </header>
+    <main id="stage" class="stage" aria-label="Flappy Beat Drop game">
+      <canvas id="game" class="game-canvas" aria-label="Game. Tap, click, or press Space to flap."></canvas>
+      <div id="start-screen" class="overlay">
+        <section class="card" aria-labelledby="game-title">
+          <div class="eyebrow">A rhythm arcade challenge</div><div class="hero-icon" aria-hidden="true">🎙️</div>
+          <h1 id="game-title" class="hero-title">FLAPPY<br>BEAT DROP</h1>
+          <p class="intro">Catch the rhythm. Slip through the speakers. Make every run your best.</p>
+          <div class="section-label">Choose your character</div>
+          <div class="skins" role="group" aria-label="Choose a character">
+            <button class="skin" type="button" data-skin="mic" aria-pressed="true"><span class="skin-icon">🎙</span><span class="skin-name">MC MIC</span></button>
+            <button class="skin" type="button" data-skin="boombox" aria-pressed="false"><span class="skin-icon">📻</span><span class="skin-name">BOOMBOX</span></button>
+            <button class="skin" type="button" data-skin="grillz" aria-pressed="false"><span class="skin-icon">💿</span><span class="skin-name">GRILLZ</span></button>
+          </div>
+          <button id="start-btn" class="primary" type="button">Start your set <span aria-hidden="true">→</span></button>
+          <p class="hint">TAP / CLICK / SPACE TO FLAP &nbsp;·&nbsp; ESC TO PAUSE</p>
+        </section>
+      </div>
+      <div id="pause-screen" class="overlay" hidden>
+        <section class="card"><div class="eyebrow">Take a breather</div><div class="hero-icon" aria-hidden="true">⏸</div><h2 class="result-title">SET PAUSED</h2><p class="intro">Your run is waiting. Jump back in when you’re ready.</p><button id="resume-btn" class="primary" type="button">Resume run <span aria-hidden="true">→</span></button><p class="hint">PRESS ESC OR P TO RESUME</p></section>
+      </div>
+      <div id="over-screen" class="overlay" hidden>
+        <section class="card"><div class="eyebrow">The crowd wants an encore</div><div class="hero-icon" aria-hidden="true">💥</div><h2 class="result-title">RECORD SCRATCH</h2><p class="result-copy">Run complete</p><div class="score-box"><div class="score-cell"><span class="score-caption">Your score</span><strong id="final-score" class="score-value">0</strong></div><div class="score-cell"><span class="score-caption">Personal best</span><strong id="best-score" class="score-value">0</strong></div></div><button id="retry-btn" class="primary" type="button">Run it back <span aria-hidden="true">↻</span></button><p class="hint">ONE MORE TRACK. ONE MORE RECORD.</p></section>
+      </div>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </main>
+    <footer class="bottombar"><div class="status"><span class="status-dot"></span><span id="game-status">READY WHEN YOU ARE</span></div><span class="credit">BUILT FOR THE BEAT</span></footer>
+  </div>
+<script>
+(() => {
+  'use strict';
+  const canvas = document.querySelector('#game');
+  const ctx = canvas.getContext('2d');
+  const stage = document.querySelector('#stage');
+  const startScreen = document.querySelector('#start-screen');
+  const pauseScreen = document.querySelector('#pause-screen');
+  const overScreen = document.querySelector('#over-screen');
+  const pauseButton = document.querySelector('#pause-btn');
+  const soundButton = document.querySelector('#sound-btn');
+  const statusText = document.querySelector('#game-status');
+  const toast = document.querySelector('#toast');
+  const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+  const COLORS = { pink:'#ff3d9a', cyan:'#39e7f5', gold:'#ffdf65', purple:'#aa81ff', ink:'#0b0b19' };
+  let W = 0, H = 0, dpr = 1, state = 'ready', skin = 'mic', score = 0, best = safeReadBest();
+  let lastTime = 0, elapsed = 0, spawnIn = 1.15, combo = 0, shake = 0, toastTimer = 0;
+  let obstacles = [], pickups = [], particles = [], notes = [];
+  let audioContext = null, muted = false;
+  const bird = { x:0, y:0, vy:0, r:15, shield:0, slow:0, invulnerable:0, rotation:0 };
+  const skins = [...document.querySelectorAll('.skin')];
+
+  function safeReadBest(){try{return Math.max(0,Number(localStorage.getItem('beat-drop-best'))||0)}catch{return 0}}
+  function safeWriteBest(value){try{localStorage.setItem('beat-drop-best',String(value))}catch{}}
+  function resize(){
+    const rect=stage.getBoundingClientRect(); W=Math.max(1,rect.width); H=Math.max(1,rect.height); dpr=Math.min(window.devicePixelRatio||1,2);
+    canvas.width=Math.round(W*dpr); canvas.height=Math.round(H*dpr); ctx.setTransform(dpr,0,0,dpr,0,0);
+    bird.x=clamp(W*.25,42,W-42); if(state!=='playing'&&state!=='paused')bird.y=H*.48;
+    notes=Array.from({length:Math.max(14,Math.round(W*H/11500))},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+.5,a:Math.random()*.38+.08,p:Math.random()*6.28}));
+  }
+  window.addEventListener('resize',resize,{passive:true});
+  if('ResizeObserver'in window)new ResizeObserver(resize).observe(stage);
+  resize();
+
+  function initAudio(){if(muted)return;try{const AC=window.AudioContext||window.webkitAudioContext;if(AC&&!audioContext)audioContext=new AC();if(audioContext?.state==='suspended')audioContext.resume()}catch{}}
+  function tone(freq,duration,type='sine',volume=.08,slide=0){if(muted)return;initAudio();if(!audioContext)return;try{const now=audioContext.currentTime,osc=audioContext.createOscillator(),gain=audioContext.createGain();osc.type=type;osc.frequency.setValueAtTime(freq,now);if(slide)osc.frequency.exponentialRampToValueAtTime(Math.max(1,slide),now+duration);gain.gain.setValueAtTime(volume,now);gain.gain.exponentialRampToValueAtTime(.001,now+duration);osc.connect(gain);gain.connect(audioContext.destination);osc.start(now);osc.stop(now+duration)}catch{}}
+  function soundJump(){tone(240,.12,'triangle',.055,520)}
+  function soundScore(){tone(620,.16,'sine',.055,880)}
+  function soundPickup(){tone(360,.22,'sine',.07,960)}
+  function soundCrash(){tone(130,.28,'sawtooth',.06,42)}
+  soundButton.addEventListener('click',()=>{muted=!muted;soundButton.textContent=muted?'♫̸':'♫';soundButton.setAttribute('aria-label',muted?'Turn sound on':'Turn sound off');soundButton.title=muted?'Sound off':'Sound on';if(!muted)initAudio()});
+
+  function selectSkin(value){skin=value;skins.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.skin===skin)))}
+  skins.forEach(button=>button.addEventListener('click',()=>selectSkin(button.dataset.skin)));
+  function resetRun(){score=0;combo=0;elapsed=0;spawnIn=.85;shake=0;obstacles=[];pickups=[];particles=[];bird.y=H*.48;bird.vy=0;bird.r=15;bird.shield=0;bird.slow=0;bird.invulnerable=0;bird.rotation=0;}
+  function begin(){initAudio();resetRun();state='playing';startScreen.hidden=true;pauseScreen.hidden=true;overScreen.hidden=true;pauseButton.disabled=false;statusText.textContent='LIVE SET • KEEP THE COMBO';lastTime=performance.now()}
+  function pause(){if(state!=='playing')return;state='paused';pauseScreen.hidden=false;pauseButton.disabled=false;statusText.textContent='SET PAUSED'}
+  function resume(){if(state!=='paused')return;initAudio();state='playing';pauseScreen.hidden=true;statusText.textContent='LIVE SET • KEEP THE COMBO';lastTime=performance.now()}
+  function endRun(){if(state!=='playing')return;state='over';soundCrash();shake=.35;pauseButton.disabled=true;if(score>best){best=score;safeWriteBest(best);statusText.textContent='NEW PERSONAL BEST!'}else statusText.textContent='SET COMPLETE';document.querySelector('#final-score').textContent=score;document.querySelector('#best-score').textContent=best;overScreen.hidden=false}
+  document.querySelector('#start-btn').addEventListener('click',begin);
+  document.querySelector('#retry-btn').addEventListener('click',begin);
+  document.querySelector('#resume-btn').addEventListener('click',resume);
+  pauseButton.addEventListener('click',()=>state==='paused'?resume():pause());
+  window.addEventListener('keydown',event=>{
+    if(event.code==='Space'){event.preventDefault();if(state==='ready'||state==='over')begin();else if(state==='playing')flap()}
+    if(event.code==='Escape'||event.code==='KeyP'){if(state==='playing')pause();else if(state==='paused')resume()}
+  });
+  canvas.addEventListener('pointerdown',event=>{event.preventDefault();if(state==='playing')flap();else if(state==='ready'||state==='over')begin()},{passive:false});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden&&state==='playing')pause()});
+
+  function flap(){bird.vy=-410;bird.rotation=-.38;soundJump();burst(bird.x-8,bird.y+5,COLORS.cyan,5)}
+  function showToast(message){toast.textContent=message;toast.classList.add('show');toastTimer=1.05}
+  function burst(x,y,color,count=12){for(let i=0;i<count;i++){const angle=Math.random()*Math.PI*2,speed=45+Math.random()*155;particles.push({x,y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,r:2+Math.random()*3,life:.65,max:.65,color})}}
+  function spawnObstacle(){const gap=clamp(174-score*.75,126,174),margin=58;const center=margin+gap/2+Math.random()*Math.max(0,H-2*margin-gap);const width=58;obstacles.push({x:W+width, w:width, top:center-gap/2, bottom:center+gap/2, passed:false, cleared:false, hue:(score*17+Math.random()*25)%360});if(Math.random()<.78){const roll=Math.random(),type=roll<.52?'vinyl':roll<.76?'shield':'slow';pickups.push({x:W+width+28,y:center,type,r:12,phase:Math.random()*6.28})}}
+  function update(dt){
+    for(const n of notes)n.y-=dt*(8+n.r*4);for(const n of notes)if(n.y<-5){n.y=H+5;n.x=Math.random()*W}
+    if(toastTimer>0){toastTimer-=dt;if(toastTimer<=0)toast.classList.remove('show')}
+    if(state!=='playing')return;
+    elapsed+=dt;bird.shield=Math.max(0,bird.shield-dt);bird.slow=Math.max(0,bird.slow-dt);bird.invulnerable=Math.max(0,bird.invulnerable-dt);
+    const speed=(190+Math.min(135,score*2.7))*(bird.slow>0?.68:1);
+    bird.vy+=1180*dt;bird.y+=bird.vy*dt;bird.rotation=clamp(bird.vy/600,-.48,.8);
+    spawnIn-=dt;if(spawnIn<=0){spawnObstacle();spawnIn=Math.max(.94,1.48-score*.009)}
+    for(let i=obstacles.length-1;i>=0;i--){const o=obstacles[i];o.x-=speed*dt;if(!o.passed&&o.x+o.w<bird.x){o.passed=true;combo++;score+=combo>=10?4:combo>=6?3:combo>=3?2:1;soundScore();burst(bird.x,bird.y,COLORS.gold,6);if(combo===3||combo===6||combo===10)showToast(`${combo>=10?'4×':combo>=6?'3×':'2×'} COMBO`)}if(o.x+o.w<-10)obstacles.splice(i,1)}
+    for(let i=pickups.length-1;i>=0;i--){const p=pickups[i];p.x-=speed*dt;p.phase+=dt*4;if(Math.hypot(p.x-bird.x,p.y-bird.y)<bird.r+p.r){if(p.type==='vinyl'){score+=5;showToast('+5 VINYL')}else if(p.type==='shield'){bird.shield=8;showToast('SHIELD • 8 SEC')}else{bird.slow=4;showToast('SLOW-MO • 4 SEC')}soundPickup();burst(p.x,p.y,p.type==='vinyl'?COLORS.gold:p.type==='shield'?COLORS.cyan:COLORS.purple,14);pickups.splice(i,1);continue}if(p.x<-20)pickups.splice(i,1)}
+    for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=65*dt;p.life-=dt;if(p.life<=0)particles.splice(i,1)}
+    if(bird.y+bird.r>H-12||bird.y-bird.r<12){endRun();return}
+    for(const o of obstacles){const overlapX=bird.x+bird.r>o.x&&bird.x-bird.r<o.x+o.w,hit=overlapX&&(bird.y-bird.r<o.top||bird.y+bird.r>o.bottom);if(hit&&!o.cleared&&bird.invulnerable<=0){if(bird.shield>0){bird.shield=0;o.cleared=true;bird.invulnerable=.8;bird.vy=-245;burst(bird.x,bird.y,COLORS.cyan,20);showToast('SHIELD SAVED THE SET')}else{endRun();return}}}
+  }
+
+  function roundedRect(x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r)}
+  function drawBackground(time){const grad=ctx.createLinearGradient(0,0,W,H);grad.addColorStop(0,'#101020');grad.addColorStop(1,'#090914');ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);const glow=ctx.createRadialGradient(W*.5,H*.45,0,W*.5,H*.45,Math.max(W,H)*.8);glow.addColorStop(0,`hsla(${(score*10+260)%360},55%,28%,.11)`);glow.addColorStop(1,'transparent');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);for(const n of notes){ctx.globalAlpha=n.a*(.7+.3*Math.sin(time*.001+n.p));ctx.fillStyle='#9e94d6';ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
+    const horizon=H*.78;for(let x=0;x<W;x+=34){const bh=18+((Math.sin(x*12.23)+1)*.5)*55;ctx.fillStyle='#141426';ctx.fillRect(x,horizon-bh,25,bh);ctx.fillStyle='#f354a1';ctx.globalAlpha=.16;for(let yy=horizon-bh+8;yy<horizon-5;yy+=10)ctx.fillRect(x+6,yy,3,3);ctx.globalAlpha=1}ctx.strokeStyle='#ff3d9a';ctx.globalAlpha=.65;ctx.shadowColor='#ff3d9a';ctx.shadowBlur=14;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,H-10);ctx.lineTo(W,H-10);ctx.stroke();ctx.shadowBlur=0;ctx.globalAlpha=1;
+  }
+  function drawSpeaker(o,time,top){const y=top?0:o.bottom,h=top?o.top:H-o.bottom;if(h<=0)return;ctx.save();ctx.shadowColor=COLORS.cyan;ctx.shadowBlur=12;roundedRect(o.x,y,o.w,h,9);const g=ctx.createLinearGradient(o.x,y,o.x+o.w,y+h);g.addColorStop(0,'#202039');g.addColorStop(1,'#111120');ctx.fillStyle=g;ctx.fill();ctx.lineWidth=2;ctx.strokeStyle=`hsl(${o.hue},90%,65%)`;ctx.stroke();ctx.shadowBlur=0;const cx=o.x+o.w/2;for(let sy=y+(top?h-29:29);top?sy>y+24:sy<y+h-20;sy+=47){ctx.beginPath();ctx.arc(cx,sy,15,0,Math.PI*2);ctx.fillStyle='#090914';ctx.fill();ctx.strokeStyle='#ff3d9a';ctx.lineWidth=1.5;ctx.stroke();ctx.beginPath();ctx.arc(cx,sy,5+Math.sin(time*.008+sy)*1.5,0,Math.PI*2);ctx.fillStyle='#ff3d9a';ctx.shadowColor='#ff3d9a';ctx.shadowBlur=10;ctx.fill();ctx.shadowBlur=0}ctx.restore()}
+  function drawPickup(p,time){ctx.save();ctx.translate(p.x,p.y);const pulse=1+Math.sin(time*.006+p.phase)*.12;ctx.scale(pulse,pulse);const color=p.type==='vinyl'?COLORS.gold:p.type==='shield'?COLORS.cyan:COLORS.purple;ctx.shadowColor=color;ctx.shadowBlur=18;ctx.fillStyle=color;ctx.beginPath();ctx.arc(0,0,p.r,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#111120';if(p.type==='vinyl'){ctx.beginPath();ctx.arc(0,0,4,0,Math.PI*2);ctx.fill();ctx.strokeStyle='#111120';ctx.lineWidth=1;ctx.beginPath();ctx.arc(0,0,8,0,Math.PI*2);ctx.stroke()}else{ctx.fillStyle='#0c0c18';ctx.font='bold 11px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.type==='shield'?'S':'↘',0,0)}ctx.restore()}
+  function drawPlayer(){ctx.save();ctx.translate(bird.x,bird.y);ctx.rotate(bird.rotation);if(bird.invulnerable>0&&Math.floor(performance.now()/90)%2===0)ctx.globalAlpha=.38;if(bird.shield>0){ctx.beginPath();ctx.arc(0,0,bird.r+9+Math.sin(performance.now()*.01)*1.5,0,Math.PI*2);ctx.strokeStyle=COLORS.cyan;ctx.lineWidth=2;ctx.shadowColor=COLORS.cyan;ctx.shadowBlur=16;ctx.stroke();ctx.shadowBlur=0}
+    const accent=skin==='mic'?COLORS.pink:skin==='boombox'?COLORS.cyan:COLORS.gold;ctx.shadowColor=accent;ctx.shadowBlur=16;
+    if(skin==='mic'){ctx.fillStyle='#d9e8f2';ctx.beginPath();ctx.ellipse(0,-2,14,13,0,0,Math.PI*2);ctx.fill();ctx.fillStyle='#293047';ctx.fillRect(-6,8,12,10);ctx.fillStyle=accent;ctx.fillRect(-6,7,12,3);ctx.fillStyle='#172033';ctx.beginPath();ctx.ellipse(-5,-4,2.4,3.2,0,0,Math.PI*2);ctx.ellipse(5,-4,2.4,3.2,0,0,Math.PI*2);ctx.fill()}
+    else if(skin==='boombox'){ctx.fillStyle='#272444';ctx.strokeStyle=accent;ctx.lineWidth=2;roundedRect(-17,-12,34,24,7);ctx.fill();ctx.stroke();for(const x of[-8,8]){ctx.beginPath();ctx.arc(x,0,6,0,Math.PI*2);ctx.fillStyle='#10101d';ctx.fill();ctx.beginPath();ctx.arc(x,0,2.5,0,Math.PI*2);ctx.fillStyle=accent;ctx.fill()}ctx.fillStyle=COLORS.gold;ctx.fillRect(-6,-9,12,2)}
+    else{ctx.fillStyle=COLORS.gold;ctx.beginPath();ctx.arc(0,0,15,0,Math.PI*2);ctx.fill();ctx.fillStyle='#171526';ctx.fillRect(-10,-5,5,4);ctx.fillRect(5,-5,5,4);ctx.fillStyle='#fff4c4';ctx.fillRect(-9,3,18,6);ctx.strokeStyle='#9b6b16';ctx.lineWidth=1;for(let x=-5;x<9;x+=5){ctx.beginPath();ctx.moveTo(x,3);ctx.lineTo(x,9);ctx.stroke()}}
+    ctx.restore()}
+  function drawHud(){ctx.save();ctx.textAlign='center';ctx.textBaseline='top';ctx.font='700 36px "Space Grotesk",sans-serif';ctx.shadowColor='#000';ctx.shadowBlur=8;ctx.fillStyle='#fff';ctx.fillText(score,W/2,20);ctx.shadowBlur=0;if(combo>=3){ctx.font='700 11px "DM Mono",monospace';ctx.fillStyle=COLORS.gold;ctx.fillText(`${combo>=10?'4':combo>=6?'3':'2'}× COMBO`,W/2,62)}ctx.restore();if(bird.shield>0||bird.slow>0){ctx.save();ctx.textAlign='right';ctx.font='10px "DM Mono",monospace';if(bird.shield>0){ctx.fillStyle=COLORS.cyan;ctx.fillText(`SHIELD ${Math.ceil(bird.shield)}s`,W-15,20)}if(bird.slow>0){ctx.fillStyle=COLORS.purple;ctx.fillText(`SLOW ${Math.ceil(bird.slow)}s`,W-15,37)}ctx.restore()}}
+  function render(time){ctx.clearRect(0,0,W,H);ctx.save();if(shake>0){const power=shake*12;ctx.translate((Math.random()-.5)*power,(Math.random()-.5)*power)}drawBackground(time);for(const o of obstacles){drawSpeaker(o,time,true);drawSpeaker(o,time,false)}for(const p of pickups)drawPickup(p,time);for(const p of particles){ctx.globalAlpha=clamp(p.life/p.max,0,1);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;drawPlayer();if(state==='playing'||state==='paused')drawHud();ctx.restore()}
+  function frame(time){const dt=lastTime?Math.min((time-lastTime)/1000,.04):0;lastTime=time;if(state==='playing')update(dt);if(shake>0)shake=Math.max(0,shake-dt);render(time);requestAnimationFrame(frame)}
+  bird.y=H*.48;requestAnimationFrame(frame);
+})();
+</script>
+<script>
+  if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
+  }
+</script>
+</body>
+</html>
