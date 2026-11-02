@@ -85,6 +85,7 @@ After changing cached files, update the cache version in `sw.js` before deployme
 ├── SECURITY.md
 ├── favicon.svg
 ├── index.html                # Game markup, styles, and JavaScript
+├── input-fix.js              # Keyboard repeat and control-focus safeguards
 ├── install.html              # Installation and offline setup guide
 ├── manifest.webmanifest      # Installable web app metadata
 ├── netlify.toml              # Netlify deployment configuration

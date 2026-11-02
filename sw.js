@@ -1,4 +1,4 @@
-const CACHE_NAME = 'flappy-beat-drop-v3';
+const CACHE_NAME = 'flappy-beat-drop-v4';
 const APP_SHELL = [
   './',
   './index.html',
@@ -29,26 +29,6 @@ self.addEventListener('activate', event => {
   );
 });
 
-async function addInputFix(response) {
-  if (!response || !response.ok) return response;
-  const html = await response.text();
-  if (!html.includes('./input-fix.js')) {
-    const updated = html.replace('</body>', '<script src="./input-fix.js" defer></script></body>');
-    const headers = new Headers(response.headers);
-    headers.delete('content-length');
-    return new Response(updated, {
-      status: response.status,
-      statusText: response.statusText,
-      headers
-    });
-  }
-  return new Response(html, {
-    status: response.status,
-    statusText: response.statusText,
-    headers: response.headers
-  });
-}
-
 self.addEventListener('fetch', event => {
   const request = event.request;
   if (request.method !== 'GET') return;
@@ -74,22 +54,18 @@ self.addEventListener('fetch', event => {
   if (url.origin !== self.location.origin) return;
 
   if (request.mode === 'navigate') {
-    const isGamePage = url.pathname.endsWith('/') || url.pathname.endsWith('/index.html');
     event.respondWith(
       fetch(request)
         .then(async response => {
           if (response.ok) {
-            const page = isGamePage ? await addInputFix(response.clone()) : response.clone();
             const cache = await caches.open(CACHE_NAME);
-            await cache.put(request, page.clone());
-            return page;
+            await cache.put(request, response.clone());
           }
           return response;
         })
         .catch(async () => {
           const cache = await caches.open(CACHE_NAME);
-          const cached = await cache.match(request) || await cache.match('./index.html') || await cache.match('./');
-          return isGamePage ? addInputFix(cached) : cached;
+          return await cache.match(request) || await cache.match('./index.html') || await cache.match('./');
         })
     );
     return;

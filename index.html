@@ -17,6 +17,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Beat Drop">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <script src="./input-fix.js" defer></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
     :root{color-scheme:dark;--bg:#090914;--panel:#111120;--line:#28283d;--muted:#9898ad;--pink:#ff3d9a;--cyan:#39e7f5;--gold:#ffdf65;--purple:#aa81ff}
@@ -78,7 +79,7 @@
   const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
   const COLORS = { pink:'#ff3d9a', cyan:'#39e7f5', gold:'#ffdf65', purple:'#aa81ff', ink:'#0b0b19' };
   let W = 0, H = 0, dpr = 1, state = 'ready', skin = 'mic', score = 0, best = safeReadBest();
-  let lastTime = 0, elapsed = 0, spawnIn = 1.15, combo = 0, shake = 0, toastTimer = 0;
+  let lastTime = 0, elapsed = 0, spawnIn = 1.15, combo = 0, shake = 0, toastTimer = 0, spacePressed = false;
   let obstacles = [], pickups = [], particles = [], notes = [];
   let audioContext = null, muted = false;
   const bird = { x:0, y:0, vy:0, r:15, shield:0, slow:0, invulnerable:0, rotation:0 };
@@ -97,7 +98,7 @@
   resize();
 
   function initAudio(){if(muted)return;try{const AC=window.AudioContext||window.webkitAudioContext;if(AC&&!audioContext)audioContext=new AC();if(audioContext?.state==='suspended')audioContext.resume()}catch{}}
-  function tone(freq,duration,type='sine',volume=.08,slide=0){if(muted)return;initAudio();if(!audioContext)return;try{const now=audioContext.currentTime,osc=audioContext.createOscillator(),gain=audioContext.createGain();osc.type=type;osc.frequency.setValueAtTime(freq,now);if(slide)osc.frequency.exponentialRampToValueAtTime(Math.max(1,slide),now+duration);gain.gain.setValueAtTime(volume,now);gain.gain.exponentialRampToValueAtTime(.001,now+duration);osc.connect(gain);gain.connect(audioContext.destination);osc.start(now);osc.stop(now+duration)}catch{}}
+  function tone(freq,duration,type='sine',volume=.08,slide=0){if(muted)return;initAudio();if(!audioContext)return;try{const now=audioContext.currentTime,osc=audioContext.createOscillator(),gain=audioContext.createGain();osc.type=type;osc.frequency.setValueAtTime(freq,now);if(slide)osc.frequency.exponentialRampToValueAtTime(Math.max(1,slide),now+duration);gain.gain.setValueAtTime(volume,now);gain.gain.exponentialRampToValueAtTime(.001,now+duration);osc.connect(gain);gain.connect(audioContext.destination);osc.addEventListener('ended',()=>{osc.disconnect();gain.disconnect()},{once:true});osc.start(now);osc.stop(now+duration)}catch{}}
   function soundJump(){tone(240,.12,'triangle',.055,520)}
   function soundScore(){tone(620,.16,'sine',.055,880)}
   function soundPickup(){tone(360,.22,'sine',.07,960)}
@@ -107,7 +108,7 @@
   function selectSkin(value){skin=value;skins.forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.skin===skin)))}
   skins.forEach(button=>button.addEventListener('click',()=>selectSkin(button.dataset.skin)));
   function resetRun(){score=0;combo=0;elapsed=0;spawnIn=.85;shake=0;obstacles=[];pickups=[];particles=[];bird.y=H*.48;bird.vy=0;bird.r=15;bird.shield=0;bird.slow=0;bird.invulnerable=0;bird.rotation=0;}
-  function begin(){initAudio();resetRun();state='playing';startScreen.hidden=true;pauseScreen.hidden=true;overScreen.hidden=true;pauseButton.disabled=false;statusText.textContent='LIVE SET • KEEP THE COMBO';lastTime=performance.now()}
+  function begin(){if(state!=='ready'&&state!=='over')return;initAudio();resetRun();state='playing';startScreen.hidden=true;pauseScreen.hidden=true;overScreen.hidden=true;pauseButton.disabled=false;statusText.textContent='LIVE SET • KEEP THE COMBO';lastTime=performance.now()}
   function pause(){if(state!=='playing')return;state='paused';pauseScreen.hidden=false;pauseButton.disabled=false;statusText.textContent='SET PAUSED'}
   function resume(){if(state!=='paused')return;initAudio();state='playing';pauseScreen.hidden=true;statusText.textContent='LIVE SET • KEEP THE COMBO';lastTime=performance.now()}
   function endRun(){if(state!=='playing')return;state='over';soundCrash();shake=.35;pauseButton.disabled=true;if(score>best){best=score;safeWriteBest(best);statusText.textContent='NEW PERSONAL BEST!'}else statusText.textContent='SET COMPLETE';document.querySelector('#final-score').textContent=score;document.querySelector('#best-score').textContent=best;overScreen.hidden=false}
@@ -116,11 +117,15 @@
   document.querySelector('#resume-btn').addEventListener('click',resume);
   pauseButton.addEventListener('click',()=>state==='paused'?resume():pause());
   window.addEventListener('keydown',event=>{
-    if(event.code==='Space'){event.preventDefault();if(state==='ready'||state==='over')begin();else if(state==='playing')flap()}
+    const target=event.target;
+    if(target instanceof Element&&target.closest('button, a[href], input, textarea, select, [contenteditable="true"]'))return;
+    if(event.code==='Space'){event.preventDefault();if(event.repeat||spacePressed)return;spacePressed=true;if(state==='ready'||state==='over')begin();else if(state==='playing')flap()}
     if(event.code==='Escape'||event.code==='KeyP'){if(state==='playing')pause();else if(state==='paused')resume()}
   });
+  window.addEventListener('keyup',event=>{if(event.code==='Space')spacePressed=false});
+  window.addEventListener('blur',()=>{spacePressed=false});
   canvas.addEventListener('pointerdown',event=>{event.preventDefault();if(state==='playing')flap();else if(state==='ready'||state==='over')begin()},{passive:false});
-  document.addEventListener('visibilitychange',()=>{if(document.hidden&&state==='playing')pause()});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden){spacePressed=false;if(state==='playing')pause()}});
 
   function flap(){bird.vy=-410;bird.rotation=-.38;soundJump();burst(bird.x-8,bird.y+5,COLORS.cyan,5)}
   function showToast(message){toast.textContent=message;toast.classList.add('show');toastTimer=1.05}
@@ -136,11 +141,11 @@
     spawnIn-=dt;if(spawnIn<=0){spawnObstacle();spawnIn=Math.max(.94,1.48-score*.009)}
     for(let i=obstacles.length-1;i>=0;i--){const o=obstacles[i];o.x-=speed*dt;if(!o.passed&&o.x+o.w<bird.x){o.passed=true;combo++;score+=combo>=10?4:combo>=6?3:combo>=3?2:1;soundScore();burst(bird.x,bird.y,COLORS.gold,6);if(combo===3||combo===6||combo===10)showToast(`${combo>=10?'4×':combo>=6?'3×':'2×'} COMBO`)}if(o.x+o.w<-10)obstacles.splice(i,1)}
     for(let i=pickups.length-1;i>=0;i--){const p=pickups[i];p.x-=speed*dt;p.phase+=dt*4;if(Math.hypot(p.x-bird.x,p.y-bird.y)<bird.r+p.r){if(p.type==='vinyl'){score+=5;showToast('+5 VINYL')}else if(p.type==='shield'){bird.shield=8;showToast('SHIELD • 8 SEC')}else{bird.slow=4;showToast('SLOW-MO • 4 SEC')}soundPickup();burst(p.x,p.y,p.type==='vinyl'?COLORS.gold:p.type==='shield'?COLORS.cyan:COLORS.purple,14);pickups.splice(i,1);continue}if(p.x<-20)pickups.splice(i,1)}
-    for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=65*dt;p.life-=dt;if(p.life<=0)particles.splice(i,1)}
     if(bird.y+bird.r>H-12||bird.y-bird.r<12){endRun();return}
     for(const o of obstacles){const overlapX=bird.x+bird.r>o.x&&bird.x-bird.r<o.x+o.w,hit=overlapX&&(bird.y-bird.r<o.top||bird.y+bird.r>o.bottom);if(hit&&!o.cleared&&bird.invulnerable<=0){if(bird.shield>0){bird.shield=0;o.cleared=true;bird.invulnerable=.8;bird.vy=-245;burst(bird.x,bird.y,COLORS.cyan,20);showToast('SHIELD SAVED THE SET')}else{endRun();return}}}
   }
 
+  function updateParticles(dt){for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=65*dt;p.life-=dt;if(p.life<=0)particles.splice(i,1)}}
   function roundedRect(x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r)}
   function drawBackground(time){const grad=ctx.createLinearGradient(0,0,W,H);grad.addColorStop(0,'#101020');grad.addColorStop(1,'#090914');ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);const glow=ctx.createRadialGradient(W*.5,H*.45,0,W*.5,H*.45,Math.max(W,H)*.8);glow.addColorStop(0,`hsla(${(score*10+260)%360},55%,28%,.11)`);glow.addColorStop(1,'transparent');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);for(const n of notes){ctx.globalAlpha=n.a*(.7+.3*Math.sin(time*.001+n.p));ctx.fillStyle='#9e94d6';ctx.beginPath();ctx.arc(n.x,n.y,n.r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
     const horizon=H*.78;for(let x=0;x<W;x+=34){const bh=18+((Math.sin(x*12.23)+1)*.5)*55;ctx.fillStyle='#141426';ctx.fillRect(x,horizon-bh,25,bh);ctx.fillStyle='#f354a1';ctx.globalAlpha=.16;for(let yy=horizon-bh+8;yy<horizon-5;yy+=10)ctx.fillRect(x+6,yy,3,3);ctx.globalAlpha=1}ctx.strokeStyle='#ff3d9a';ctx.globalAlpha=.65;ctx.shadowColor='#ff3d9a';ctx.shadowBlur=14;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,H-10);ctx.lineTo(W,H-10);ctx.stroke();ctx.shadowBlur=0;ctx.globalAlpha=1;
@@ -155,7 +160,7 @@
     ctx.restore()}
   function drawHud(){ctx.save();ctx.textAlign='center';ctx.textBaseline='top';ctx.font='700 36px "Space Grotesk",sans-serif';ctx.shadowColor='#000';ctx.shadowBlur=8;ctx.fillStyle='#fff';ctx.fillText(score,W/2,20);ctx.shadowBlur=0;if(combo>=3){ctx.font='700 11px "DM Mono",monospace';ctx.fillStyle=COLORS.gold;ctx.fillText(`${combo>=10?'4':combo>=6?'3':'2'}× COMBO`,W/2,62)}ctx.restore();if(bird.shield>0||bird.slow>0){ctx.save();ctx.textAlign='right';ctx.font='10px "DM Mono",monospace';if(bird.shield>0){ctx.fillStyle=COLORS.cyan;ctx.fillText(`SHIELD ${Math.ceil(bird.shield)}s`,W-15,20)}if(bird.slow>0){ctx.fillStyle=COLORS.purple;ctx.fillText(`SLOW ${Math.ceil(bird.slow)}s`,W-15,37)}ctx.restore()}}
   function render(time){ctx.clearRect(0,0,W,H);ctx.save();if(shake>0){const power=shake*12;ctx.translate((Math.random()-.5)*power,(Math.random()-.5)*power)}drawBackground(time);for(const o of obstacles){drawSpeaker(o,time,true);drawSpeaker(o,time,false)}for(const p of pickups)drawPickup(p,time);for(const p of particles){ctx.globalAlpha=clamp(p.life/p.max,0,1);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;drawPlayer();if(state==='playing'||state==='paused')drawHud();ctx.restore()}
-  function frame(time){const dt=lastTime?Math.min((time-lastTime)/1000,.04):0;lastTime=time;if(state==='playing')update(dt);if(shake>0)shake=Math.max(0,shake-dt);render(time);requestAnimationFrame(frame)}
+  function frame(time){const dt=lastTime?Math.min((time-lastTime)/1000,.04):0;lastTime=time;if(state==='playing')update(dt);updateParticles(dt);if(shake>0)shake=Math.max(0,shake-dt);render(time);requestAnimationFrame(frame)}
   bird.y=H*.48;requestAnimationFrame(frame);
 })();
 </script>
