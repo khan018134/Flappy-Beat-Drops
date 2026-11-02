@@ -1,4 +1,4 @@
-const CACHE_NAME = 'flappy-beat-drop-v2';
+const CACHE_NAME = 'flappy-beat-drop-v3';
 const APP_SHELL = [
   './',
   './index.html',
